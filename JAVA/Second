@@ -1,0 +1,147 @@
+package forecast;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Scanner;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+public class DisplayWeather extends JFrame {
+static DisplayWeather frame;
+private JPanel contentPane;
+
+/**
+ * Launch the application.
+ */
+public static void main(String[] args) {
+EventQueue.invokeLater(new Runnable() {
+public void run() {
+try {
+frame = new DisplayWeather();
+frame.setVisible(true);
+} catch (Exception e) {
+e.printStackTrace();
+}
+}
+});
+}
+
+/**
+ * Create the frame.
+ */
+public DisplayWeather() {
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+setBounds(100, 100, 450, 300);
+contentPane = new JPanel();
+contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+setContentPane(contentPane);
+contentPane.setLayout(null);
+JLabel lblDescription = new JLabel("Description :");
+lblDescription.setBounds(73, 52, 95, 14);
+contentPane.add(lblDescription);
+JLabel desc = new JLabel("New label");
+desc.setBounds(178, 52, 246, 14);
+contentPane.add(desc);
+JLabel lblTemperature = new JLabel("Temperature:");
+lblTemperature.setBounds(73, 77, 108, 14);
+contentPane.add(lblTemperature);
+JLabel temp = new JLabel("New label");
+temp.setBounds(178, 77, 246, 14);
+contentPane.add(temp);
+JLabel lblPressure = new JLabel("Pressure:");
+lblPressure.setBounds(73, 102, 59, 14);
+contentPane.add(lblPressure);
+JLabel pressure = new JLabel("New label");
+pressure.setBounds(178, 102, 246, 14);
+contentPane.add(pressure);
+JLabel lblHumidity = new JLabel("Humidity:");
+lblHumidity.setBounds(73, 127, 59, 14);
+contentPane.add(lblHumidity);
+JLabel humidity = new JLabel("New label");
+humidity.setBounds(178, 127, 246, 14);
+contentPane.add(humidity);
+JLabel lblMin = new JLabel("Min:");
+lblMin.setBounds(73, 152, 59, 14);
+contentPane.add(lblMin);
+JLabel min = new JLabel("New label");
+min.setBounds(178, 152, 246, 14);
+contentPane.add(min);
+JLabel lblMax = new JLabel("Max:");
+lblMax.setBounds(73, 177, 59, 14);
+contentPane.add(lblMax);
+JLabel max = new JLabel("New label");
+max.setBounds(178, 177, 246, 14);
+contentPane.add(max);
+try {
+URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q="+weather.getCity()+"&appid=e353c62008538db781ac5be5658d07ef");
+HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+conn.setRequestMethod("GET");
+conn.connect();
+int response_code = conn.getResponseCode();
+if(response_code != 200) {
+if(response_code == 404)
+{
+JOptionPane.showMessageDialog(frame,
+    "City Does not exist.",
+    "WARNING",
+    JOptionPane.WARNING_MESSAGE);
+weather.main(new String[] {});
+System.exit(0);
+} else {
+System.out.println("Response code : "+response_code);
+}
+frame.dispose();
+} else {
+String inline ="";
+Scanner scan = new Scanner(url.openStream());
+while(scan.hasNext())
+{
+ inline += scan.nextLine();
+}
+scan.close();
+JSONParser parse = new JSONParser();
+JSONObject obj = (JSONObject)parse.parse(inline);
+JSONArray json_array = (JSONArray) obj.get("weather");
+for(int i = 0 ; i < json_array.size() ; i++) {
+JSONObject json_obj = (JSONObject)json_array.get(i);
+desc.setText((String) json_obj.get("description"));
+}
+JSONObject main = (JSONObject) obj.get("main");
+temp.setText(String.valueOf(main.get("temp")));
+pressure.setText(String.valueOf(main.get("pressure")));
+humidity.setText(String.valueOf(main.get("humidity")));
+min.setText(String.valueOf(main.get("temp_min")));
+max.setText(String.valueOf(main.get("temp_max")));
+conn.disconnect();
+}
+} catch (MalformedURLException e1) {
+// TODO Auto-generated catch block
+e1.printStackTrace();
+} catch (IOException e1) {
+// TODO Auto-generated catch block
+e1.printStackTrace();
+} catch (ParseException e1) {
+// TODO Auto-generated catch block
+e1.printStackTrace();
+} catch (NullPointerException e) {
+}
+}
+}
+
+		
+
