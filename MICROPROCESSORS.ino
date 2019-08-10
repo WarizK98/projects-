@@ -1,0 +1,184 @@
+
+#include <ESP8266WiFi.h>
+
+const char* ssid = "sarala";
+const char* password = "chandana96";
+
+
+const int BuzzerPin = 16;       // Buzzer output pin
+const int threshold = 40;   // Flame level threshold (You can vary the value depends on your need)
+
+const int analogPin = A0;
+
+int WiFiStrength = 0;
+
+WiFiServer server(80);
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  pinMode(BuzzerPin, OUTPUT);
+
+
+//*******************************
+  // Connect to Wi-Fi network with SSID and password
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  // Print local IP address and start web server
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  server.begin();
+
+//******************************
+
+  // Connect to WiFi network
+  //Serial.println();
+  //Serial.println();
+  //Serial.print("Connecting to ");
+  //Serial.println(ssid);
+
+  //WiFi.begin(ssid, password);
+
+  // Set the ip address of the webserver
+  // WiFi.config(WebServerIP, Gatway, Subnet)
+  // or comment out the line below and DHCP will be used to obtain an IP address
+  // which will be displayed via the serial console
+
+  //WiFi.config(IPAddress(192, 168, 1, 221), IPAddress(192, 168, 1, 1), IPAddress(255, 255, 255, 0));
+
+  // connect to WiFi router
+  //while (WiFi.status() != WL_CONNECTED) {
+    //delay(500);
+    //Serial.print(".");
+  //}
+
+  //Serial.println("");
+  //Serial.println("WiFi connected");
+
+  // Start the server
+  //server.begin();
+  //Serial.println("Server started");
+
+  // Print the IP address
+  //Serial.print("Use this URL to connect: ");
+  //Serial.print("http://");
+  //Serial.print(WiFi.localIP());
+  //Serial.println("/");
+
+}
+
+double analogValue = 0.0;
+
+
+void loop() {
+
+  WiFiStrength = WiFi.RSSI();
+  int analogValue = analogRead(analogPin);
+   Serial.println(analogValue);//serial print the FLAME sensor value
+  
+
+  // convert the analog signal to voltage
+  // the ESP2866 A0 reads between 0 and ~3 volts, producing a corresponding value
+  // between 0 and 1024. The equation below will convert the value to a voltage value.
+
+
+
+ 
+
+   if (analogValue < threshold) {
+    digitalWrite(BuzzerPin, HIGH);
+    Serial.print("High FLAME");
+    delay(500);
+  } 
+ 
+  else {
+    digitalWrite(BuzzerPin, LOW);
+    Serial.print("No flame");
+  delay(100);       
+}
+
+  // Serial data
+  Serial.print("Analog raw: ");
+  Serial.println(analogValue);
+  Serial.print("Analog V: ");
+  
+
+  Serial.print("millis(): ");
+  Serial.println(millis());
+  Serial.print("WiFi Strength: ");
+  Serial.print(WiFiStrength); Serial.println("dBm");
+  Serial.println(" ");
+  delay(1000); // slows amount of data sent via serial
+
+  // check to for any web server requests. ie - browser requesting a page from the webserver
+  WiFiClient client = server.available();
+  if (!client) {
+    return;
+  }
+
+  // Wait until the client sends some data
+  Serial.println("new client");
+
+  // Read the first line of the request
+  String request = client.readStringUntil('\r');
+  Serial.println(request);
+  client.flush();
+
+  // Return the response
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html");
+  client.println(""); //  do not forget this one
+  client.println("<!DOCTYPE HTML>");
+
+  client.println("<html>");
+  client.println(" <head>");
+  client.println("<meta http-equiv=\"refresh\" content=\"60\">");
+  client.println(" </script>");
+
+  client.println("  </head>");
+  client.println("  <body style=\"background-color:powderblue;\">");
+ client.println("<center>");
+  client.print("<h1 style=\"size:20px;\">FIRE ALARM SYSTEM</h1>");
+  client.println("<img src=\"C:\\Users\\Divya P Hathwar\\Documents\\Arduino\\flame\\ff\\fire.png\" width=\"10px\" height=\"10px\">");
+
+
+  
+
+  // show some data on the webpage and the guage
+ 
+ 
+ client.println("<table><tr><td>");
+  client.print("<p style=\"size:15px;\">WiFi Signal Strength:</p>");
+  client.println(WiFiStrength);
+  client.println("dBm<br>");
+  client.print("<p style=\"size=15px;\">Analog Raw:</p>");
+  client.println(analogValue);
+  client.println("<br>");
+  if(analogValue<threshold)
+  client.println("<strong>HIGH FLAME</strong>");
+  else
+  client.println("<strong>NO FLAME</strong>");
+  
+client.println("</td></tr></table>");
+
+ 
+
+  
+  client.println("</center>");
+client.println("<script>setInterval(function(){window.location.reload();},3000);</script>");
+  client.println("<body >");
+  client.println("</html>");
+  delay(1);
+  Serial.println("Client disonnected");
+  Serial.println("");
+
+
+}
