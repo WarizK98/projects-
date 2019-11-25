@@ -1,0 +1,9 @@
+body {
+  font-size: 120%;
+  background: #F8F8FF;
+  
+    background-image: url('lib2.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+    background-size: cover;
+  }
