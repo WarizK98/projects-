@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="style3.css">
-   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
 </head>
 <style>
            body
@@ -18,9 +18,20 @@
   background-size: 2000px 1500px;
              }
              </style>
-           
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+          
+<script>
+$(document).ready(function(){
+  $("form").submit(function(){
+     alert("Your details have been submitted successfully.Please wait for someone to contact you about your item. We hope you find your missing item as soon as possible.");
+  });
+});
+</script>
+
 <body>
-<form action="formelec_post.php" method=POST>
+<form  action="formelec_post.php" method=POST>
 <div style="margin:10px">
     <h1><center>Fill this out</center></h1>
     Name of the owner<br>
@@ -40,8 +51,11 @@
     </div>
   
            </div>  
-      <button type="submit" style="padding:8px;margin:10px">Submit</button><br>
-      
+      <button type="submit" id="sub">Submit</button><br>
+</div>
+<div>
+<a href="index2.php" class="btn btn-primary" style="margin:10px">Click here to go back to the login page</a>
+</div>
       <?php
     $con=mysqli_connect("localhost","root","","iwtproject");
     $find_hackman=mysqli_query($con,"SELECT * FROM ele");
@@ -69,8 +83,9 @@
 
 </body>
 </html>
+
 <?php  
- $con = mysqli_connect("localhost", "root", "", "iwtprojectn");  
+ $con = mysqli_connect("localhost", "root", "", "iwtproject");  
  if(isset($_POST["insert"]))  
  {  
       $file = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));  

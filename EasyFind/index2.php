@@ -47,7 +47,10 @@ body {
   <div class="card-body">
     <h5 class="card-title">Missing your personal belongings</h5>
     <p class="card-text">Check if someone has found it</p>
-    <a href="formper.php" class="btn btn-primary">Click here</a>
+    <a href="formper.php" class="btn btn-primary">Fill the form about the missing item</a>
+    <a href="formperfound.php" class="btn btn-primary" style="margin:10px">Fill the form for any found item</a>
+       <a href="per1.php" class="btn btn-primary" style="margin:6px">Click for missing/found items list</a>
+    
   </div>
 </div>
 </div>
@@ -58,7 +61,10 @@ body {
   <div class="card-body">
     <h5 class="card-title">Missing your electronic gadgets</h5>
     <p class="card-text">Oh yes we know how important they are so find them.</p>
-    <a href="formelec.php" class="btn btn-primary">Find your gadget</a>
+    <a href="formelec.php" class="btn btn-primary">Fill the form about the missing item</a>
+    <a href="formelefound.php" class="btn btn-primary" style="margin:10px">Fill the form for any found item</a>
+       <a href="ele1.php" class="btn btn-primary" style="margin:6px">Click for missing/found items list</a>
+  
   </div>
 </div>
 </div>
@@ -69,7 +75,10 @@ body {
   <div class="card-body">
     <h5 class="card-title">Missing Identity card</h5>
     <p class="card-text">Find any form of card that identifies you.</p>
-    <a href="formid.php" class="btn btn-primary">Find your ID card</a>
+    <a href="formid.php" class="btn btn-primary">Fill the form about the missing item</a>
+    <a href="formidfound.php" class="btn btn-primary" style="margin:10px">Fill the form for any found item</a>
+       <a href="id1.php" class="btn btn-primary" style="margin:6px">Click for missing/found items list</a>
+    
   </div>
   </div>
   </div>
@@ -80,7 +89,10 @@ body {
   <div class="card-body">
     <h5 class="card-title">Missing college books</h5>
     <p class="card-text">Find your most precious college books.</p>
-    <a href="formbook.php" class="btn btn-primary">Click here</a>
+    <a href="formbook.php" class="btn btn-primary">Fill the form about the missing item</a>
+    <a href="formbookfound.php" class="btn btn-primary" style="margin:10px">Fill the form for any found item</a>
+       <a href="book1.php" class="btn btn-primary" style="margin:6px">Click for missing/found items list</a>
+    
   </div>
   </div>
   </div>
